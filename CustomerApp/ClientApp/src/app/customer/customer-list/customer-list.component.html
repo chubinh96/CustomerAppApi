@@ -1,0 +1,38 @@
+<h1>Customer List</h1>
+<form class="form-inline">
+  Search By:
+  <select class="form-control" #optionSearch>
+    <option value="name" selected>Name</option>
+    <option value="country">Country</option>
+  </select>
+  <input class="form-control" type="search" placeholder="Search" aria-label="Search" #textSearch>
+  <button class="btn btn-info" type="submit" (click)="onSearch(optionSearch.value,textSearch.value)">Search
+  </button>
+</form>
+<table class="table table-bordered table-hover" *ngIf="customers">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>NAME</th>
+      <th>COUNTRY</th>
+      <th>PHONE NUMBER</th>
+      <th>ACTION</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let customer of customers">
+      <td>{{customer.id}}</td>
+      <td>{{customer.name}}</td>
+      <td>{{customer.country}}</td>
+      <td>{{customer.phone}}</td>
+      <td>
+        <button class="btn btn-info" [routerLink]="['edit',customer.id]">Edit</button>
+        <button class="btn btn-info" (click)="onDelete(customer.id)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+<div>
+  <button class="btn btn-success" [routerLink]="['add']">Add</button>
+</div>
+
