@@ -14,6 +14,8 @@ export class CustomerListComponent implements OnInit {
   public customers: Customer[];
   public subscription: Subscription;
 
+  public customer2: Customer[];
+
   myAppUrl = '';
 
   constructor(
@@ -31,6 +33,11 @@ export class CustomerListComponent implements OnInit {
   loadData() {
     this.subscription = this.customerService.getAll().subscribe(data => {
       this.customers = data;
+      console.log(this.customers);
+    });
+    this.subscription = this.customerService.getAll2().subscribe(data => {
+      this.customer2 = data;
+      console.log(this.customer2);
     });
   }
 
@@ -43,15 +50,11 @@ export class CustomerListComponent implements OnInit {
       if (option == "name") {
         return this.http.get<Customer[]>(this.myAppUrl + 'api/Customer/SearchByName/' + value).subscribe(result => {
           this.customers = result;
-          console.log(result);
-          console.log(this.myAppUrl + 'api/Customer/SearchByName/' + value);
         }, error => console.error(error));
       }
       if (option == "country") {
         return this.http.get<Customer[]>(this.myAppUrl + 'api/Customer/SearchByCountry/' + value).subscribe(result => {
           this.customers = result;
-          console.log(result);
-          console.log(this.myAppUrl + 'api/Customer/SearchByCountry/' + value);
         }, error => console.error(error));
       }
     }
@@ -60,21 +63,11 @@ export class CustomerListComponent implements OnInit {
   onDelete(id) {
     console.log(id);
     this.subscription = this.customerService.deleteById(id).subscribe(data => {
+      console.log(typeof data);
       console.log(data);
+      //this.customers = data;
+
     });
   }
 
-  fetchData() {
-    return this.http.get<Customer[]>(this.myAppUrl + 'api/Customer/GetCustomer').subscribe(result => {
-      this.customers = result;
-    }, error => console.error(error));
-  }
-
 }
-
-//interface Customer {
-  //id: number;
-  //name: string;
-  //country: string;
-  //phone: number;
-//}

@@ -7,12 +7,13 @@ namespace CustomerApp.Models
 {
     public class Customer
     {
-        public int id { get; set; }
+        public dynamic id { get; set; }
 
         public string name { get; set; }
 
         public string country { get; set; }
 
-        public int phone { get; set; }
+        public dynamic phone { get; set; }
+
     }
 }

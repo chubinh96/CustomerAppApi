@@ -71,10 +71,3 @@ export class CustomerDetailComponent implements OnInit {
   }
 
 }
-
-//interface Customer {
-  //id: number;
-  //name: string;
-  //country: string;
-  //phone: number;
-//}

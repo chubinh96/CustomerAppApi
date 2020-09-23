@@ -36,4 +36,28 @@
   <button class="btn btn-success" [routerLink]="['add']">Add</button>
 </div>
 
+<table class="table table-bordered table-hover" *ngIf="customer2">
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>NAME</th>
+      <th>COUNTRY</th>
+      <th>PHONE NUMBER</th>
+      <th>ACTION</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let customer22 of customer2">
+      <td>{{customer22.id}}</td>
+      <td>{{customer22.name}}</td>
+      <td>{{customer22.country}}</td>
+      <td>{{customer22.phone}}</td>
+      <td>
+        <button class="btn btn-info" [routerLink]="['edit',customer22.id]">Edit</button>
+        <button class="btn btn-info" (click)="onDelete(customer.id)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
 

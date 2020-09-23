@@ -16,6 +16,10 @@ export class CustomerService {
     return this.http.get<Customer[]>(this.Api + 'api/Customer/GetCustomer');
   }
 
+  getAll2(): Observable<Customer[]> {
+    return this.http.get<Customer[]>(this.Api + 'api/Customer/getAllCustomer');
+  }
+
   addNew(customer: Customer): Observable<Customer> {
     return this.http.post<Customer>(this.Api + 'api/Customer', customer);
   }
