@@ -16,5 +16,12 @@ export class CustomerService {
     return this.http.get<Customer[]>(this.Api + 'api/Customer/GetCustomer');
   }
 
+  addNew(customer: Customer): Observable<Customer> {
+    return this.http.post<Customer>(this.Api + 'api/Customer', customer);
+  }
+
+  deleteById(id: number): Observable<Customer> {
+    return this.http.delete<Customer>(this.Api + 'api/Customer/${id}');
+  }
 
 }

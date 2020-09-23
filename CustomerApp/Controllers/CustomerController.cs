@@ -21,16 +21,13 @@ namespace CustomerApp.Controllers
                 new Customer{id = 5, name = "Alens", country = "America", phone = 09887891},
                 new Customer{id = 6, name = "Scable", country = "Korea", phone = 09100302},
                 new Customer{id = 7, name = "Milax", country = "South America", phone = 09093293}
-            };
-        //private IEnumerable<Customer> customerss;
+        };
 
         // GET: api/<controller>
         [HttpGet("[action]")]
         public IEnumerable<Customer> GetCustomer()
         {
-            //return JsonConvert.SerializeObject(customers);
             return customers;
-
         }
 
         // GET api/<controller>/SearchByName/Alex
@@ -90,12 +87,8 @@ namespace CustomerApp.Controllers
         // POST api/<controller>
         [HttpPost]
         public IEnumerable<Customer> Post([FromBody]Customer customer)
-        {
-            //Customer customerss = new Customer() { id = 8, name = "binh", country = "vn", phone = 434324 }; 
-            Customer customerss = customer;
-            customers.Add(customerss);
-            List<Customer> cs = new List<Customer>();
-            cs.Add(customerss);
+        { 
+            customers.Add(customer);
             return customers;
         }
 
@@ -107,18 +100,21 @@ namespace CustomerApp.Controllers
 
         // DELETE api/<controller>/5
         [HttpDelete("{id}")]
-        public void Delete(int id)
+        public IEnumerable<Customer> Delete(int id)
         {
-            List<Customer> customer = new List<Customer>();
+            //List<Customer> customer = new List<Customer>();
 
             for (int i = 0; i < customers.Count(); i++)
             {
                 if (customers[i].id == id)
                 {
                     customers.RemoveAt(i);
+                    customers.Add(customers[i]);
                     break;
                 }
             }
+
+            return customers;
         }
     }
 

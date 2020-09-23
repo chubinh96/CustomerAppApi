@@ -12,6 +12,7 @@ import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { CustomerComponent } from './customer/customer.component';
 import { CustomerListComponent } from './customer/customer-list/customer-list.component';
 import { CustomerDetailComponent } from './customer/customer-detail/customer-detail.component';
+import { CustomerService } from './services/customer.service';
 
 @NgModule({
   declarations: [
@@ -52,7 +53,7 @@ import { CustomerDetailComponent } from './customer/customer-detail/customer-det
       }
     ])
   ],
-  providers: [],
+  providers: [CustomerService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

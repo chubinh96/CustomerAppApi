@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CustomerService } from '../../services/customer.service';
-import { Customer } from '../../Model/customer.model';
+import { Customer } from '../../model/customer.model';
 import { from } from 'rxjs/observable/from'; 
 import { Subscription } from 'rxjs';
 
@@ -14,10 +14,6 @@ export class CustomerListComponent implements OnInit {
   public customers: Customer[];
   public subscription: Subscription;
 
-  ngOnInit() {
-    this.loadData();
-  }
-
   myAppUrl = '';
 
   constructor(
@@ -28,11 +24,11 @@ export class CustomerListComponent implements OnInit {
     this.myAppUrl = baseUrl;
   }
 
+  ngOnInit() {
+    this.loadData();
+  }
+
   loadData() {
-    //return this.http.get<Customer[]>(this.myAppUrl + 'api/Customer/GetCustomer').subscribe(result => {
-      //this.customers = result;
-      //console.log(result);
-    //}, error => console.error(error));
     this.subscription = this.customerService.getAll().subscribe(data => {
       this.customers = data;
     });
@@ -62,10 +58,10 @@ export class CustomerListComponent implements OnInit {
   }
 
   onDelete(id) {
-    return this.http.delete<Customer[]>(this.myAppUrl + 'api/Customer/' + id).subscribe(result => {
-      //this.fetchData();
-      console.log(id);
-    }, error => console.error(error));
+    console.log(id);
+    this.subscription = this.customerService.deleteById(id).subscribe(data => {
+      console.log(data);
+    });
   }
 
   fetchData() {
