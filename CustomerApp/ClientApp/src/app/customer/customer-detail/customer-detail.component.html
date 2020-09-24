@@ -1,6 +1,6 @@
 
 
-<form #customerForm="ngForm" (ngSubmit)="onSubmit(customerForm)">
+<!--<form #customerForm="ngForm" (ngSubmit)="onSubmit(customerForm)">
   <div class="form-group">
     <label for="">Id</label>
     <input type="number" class="form-control" name="id" ngModel>
@@ -22,4 +22,38 @@
     <button type="submit" class="btn btn-primary" [style.margin-right.px]="20">Add</button>
     <button type="submit" class="btn btn-primary" [routerLink]="['/customer']">Cancel</button>
   </div>
-</form>
+</form>-->
+<div class="panel panel-primary">
+  <div class="panel-heading">
+    <h3 class="panel-title">{{title}} Customer</h3>
+  </div>
+  <div class="panel-body">
+    <form>
+      <div class="form-group">
+        <label for="">Id</label>
+        <input [disabled]="status"  type="number" class="form-control" [(ngModel)]="currentCustomer.id" [ngModelOptions]="{standalone: true}">
+      </div>
+      <div class="form-group">
+        <label for="">Name</label>
+        <input type="text" class="form-control" required minlength="4" [(ngModel)]="currentCustomer.name" [ngModelOptions]="{standalone: true}">
+      </div>
+      <div class="form-group">
+        <label for="">Country</label>
+        <input type="text" class="form-control" [(ngModel)]="currentCustomer.country" [ngModelOptions]="{standalone: true}">
+      </div>
+      <div class="form-group">
+        <label for="">Phone Number</label>
+        <input type="number" class="form-control" [(ngModel)]="currentCustomer.phone" [ngModelOptions]="{standalone: true}">
+      </div>
+      <ng-template *ngIf="title === 'Add'; then addBlock else editBlock">
+      </ng-template>
+      <ng-template #addBlock>
+        <button class="btn btn-primary" (click)="onAdd()">Add</button>
+      </ng-template>
+      <ng-template #editBlock>
+        <button class="btn btn-primary" (click)="onEdit()">Edit</button>
+      </ng-template>
+      <button type="submit" class="btn btn-danger" [routerLink]="['/customer']">Cancel</button>
+    </form>
+  </div>
+</div>

@@ -5,6 +5,8 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
 import { Customer } from '../../model/customer.model';
 import { CustomerService } from '../../services/customer.service';
+import { error } from 'util';
+import { from } from 'rxjs/observable/from';
 
 @Component({
   selector: 'app-customer-detail',
@@ -12,7 +14,8 @@ import { CustomerService } from '../../services/customer.service';
   styleUrls: ['./customer-detail.component.css']
 })
 export class CustomerDetailComponent implements OnInit {
-  //currentCustomer: Customer[];
+  public title = '';
+  public status: boolean;
   //currentCustomer: Customer = new Customer();
   currentCustomer: Customer;
   subscription: Subscription;
@@ -36,36 +39,36 @@ export class CustomerDetailComponent implements OnInit {
 
   loadData() {
     this.subscription = this.activeRouteService.paramMap.subscribe(params => {
-      let id = params.get("id");
-      this.customerModelId = Number(id);
-      this.http.get<Customer[]>(this.myAppUrl + 'api/Customer/' + id).subscribe(result => {
-        //this.currentCustomer = result;
-        //console.log(this.currentCustomer);
+      this.customerModelId = Number(params.get("id"));
+
+      this.subscription = this.customerService.getCustomerById(this.customerModelId).subscribe(data => {
+        this.currentCustomer = data;
+        console.log(this.currentCustomer);
       }, error => console.error(error));
+
+      if (this.customerModelId == 0 ) {
+        this.title = 'Add';
+        this.status = false; 
+      } else {
+        this.title = 'Edit';
+        this.status = true; 
+      }
     });
+
   }
 
-
-  onSubmit(form: NgForm) {
-    this.currentCustomer = form.value;
-    //this.http.post<Customer[]>(this.myAppUrl + 'api/Customer', this.currentCustomer).subscribe(result => {
-      //console.log(result);
-      //this.routerActive.navigateByUrl('customer');
-    //}, error => console.error(error));
-
+  onAdd() {
     this.subscription = this.customerService.addNew(this.currentCustomer).subscribe(data => {
+      console.log(this.currentCustomer);
       console.log(data);
       //this.routerActive.navigateByUrl('customer');
-    });
-
-    console.log(this.currentCustomer);
+    }, error => console.error(error));
   }
-  
 
-  onAdd(form: NgForm) {
-    this.currentCustomer = form.value;
-    console.log(this.currentCustomer);
-    this.http.post<Customer[]>(this.myAppUrl + 'api/Customer', this.currentCustomer).subscribe(result => {
+  onEdit() {
+    this.subscription = this.customerService.updateById(this.currentCustomer.id, this.currentCustomer).subscribe(data => {
+      console.log(this.currentCustomer);
+      console.log(data);
       //this.routerActive.navigateByUrl('customer');
     }, error => console.error(error));
   }

@@ -3,4 +3,6 @@ export class Customer {
   name: string;
   country: string;
   phone: number;
+  
+  constructor() { }
 }

@@ -14,9 +14,16 @@ export class CustomerListComponent implements OnInit {
   public customers: Customer[];
   public subscription: Subscription;
 
-  public customer2: Customer[];
-
   myAppUrl = '';
+
+  //Sort Function
+  sortBy = 'id';
+  sortByValue = 1;
+  sortById = 1;
+  sortByName = 1;
+  sortByCountry = 1;
+
+  //Search Function
 
   constructor(
     private http: HttpClient,
@@ -33,41 +40,74 @@ export class CustomerListComponent implements OnInit {
   loadData() {
     this.subscription = this.customerService.getAll().subscribe(data => {
       this.customers = data;
-      console.log(this.customers);
     });
-    this.subscription = this.customerService.getAll2().subscribe(data => {
-      this.customer2 = data;
-      console.log(this.customer2);
-    });
+  }
+
+  onDelete(id: number, name: string) {
+    if (confirm("Do you want to delete " + name)) {
+      this.subscription = this.customerService.deleteById(id).subscribe(data => {
+        this.customers = data;
+      });
+      alert("Deleted " + name);
+    } else {
+      return;
+    }
+  }
+
+  onSort(sortBy: string) {
+    this.sortBy = sortBy;
+    if (this.sortBy == 'id') {
+      this.sortById = -this.sortById;
+      this.sortByName = 1;
+      this.sortByCountry = 1;
+
+      this.sortByValue = this.sortById;
+      this.subscription = this.customerService.sortCustomer(this.sortBy, this.sortByValue).subscribe(data => {
+        console.log(data);
+        this.customers = data;
+      });
+    }
+    if (this.sortBy == 'name') {
+      this.sortByName = -this.sortByName;
+      this.sortById = 1;
+      this.sortByCountry = 1;
+
+      this.sortByValue = this.sortByName;
+      this.subscription = this.customerService.sortCustomer(this.sortBy, this.sortByValue).subscribe(data => {
+        console.log(data);
+        this.customers = data;
+      });
+    }
+    if (this.sortBy == 'country') {
+      this.sortByCountry = -this.sortByCountry;
+      this.sortById = 1;
+      this.sortByName = 1;
+
+      this.sortByValue = this.sortByCountry;
+      this.subscription = this.customerService.sortCustomer(this.sortBy, this.sortByValue).subscribe(data => {
+        console.log(data);
+        this.customers = data;
+      });
+    }
   }
 
   onSearch(option, value) {
     if (value === "") {
-      return this.http.get<Customer[]>(this.myAppUrl + 'api/Customer/GetCustomer').subscribe(result => {
-        this.customers = result;
+      this.subscription = this.customerService.getAll().subscribe(data => {
+        this.customers = data;
       }, error => console.error(error));
     } else {
       if (option == "name") {
-        return this.http.get<Customer[]>(this.myAppUrl + 'api/Customer/SearchByName/' + value).subscribe(result => {
-          this.customers = result;
+        this.subscription = this.customerService.searchCustomer(option, value).subscribe(data => {
+          this.customers = data;
         }, error => console.error(error));
       }
       if (option == "country") {
-        return this.http.get<Customer[]>(this.myAppUrl + 'api/Customer/SearchByCountry/' + value).subscribe(result => {
-          this.customers = result;
+        this.subscription = this.customerService.searchCustomer(option, value).subscribe(data => {
+          this.customers = data;
         }, error => console.error(error));
       }
     }
-  }
-
-  onDelete(id) {
-    console.log(id);
-    this.subscription = this.customerService.deleteById(id).subscribe(data => {
-      console.log(typeof data);
-      console.log(data);
-      //this.customers = data;
-
-    });
   }
 
 }

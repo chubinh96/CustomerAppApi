@@ -18,22 +18,22 @@ namespace CustomerApp.Controllers
     {
         List<Customer> customers = new List<Customer>{
                 new Customer{id = 1, name = "Scotts", country = "Viet Nam", phone = 098765421},
-                new Customer{id = 2, name = "Justin", country = "Japan", phone = 09324131},
+                new Customer{id = 7, name = "Milax", country = "South America", phone = 09093293},
                 new Customer{id = 3, name = "Micheal", country = "Singapore", phone = 095433231},
+                new Customer{id = 2, name = "Justin", country = "Japan", phone = 09324131},
                 new Customer{id = 4, name = "Phoenix", country = "China", phone = 091242313},
-                new Customer{id = 5, name = "Alens", country = "America", phone = 09887891},
                 new Customer{id = 6, name = "Scable", country = "Korea", phone = 09100302},
-                new Customer{id = 7, name = "Milax", country = "South America", phone = 09093293}
+                new Customer{id = 5, name = "Alens", country = "America", phone = 09887891},
         };
 
-        // GET: api/<controller>
+        // GET: api/Customer
         [HttpGet("[action]")]
         public IEnumerable<Customer> GetCustomer()
         {
             return customers;
         }
 
-        // GET api/<controller>/SearchByName/Alex
+        // GET api/Customer/SearchByName/Alex
         [HttpGet("SearchByName/{name}")]
         public string GetByName(string name)
         {
@@ -52,7 +52,7 @@ namespace CustomerApp.Controllers
 
         }
 
-        // GET api/<controller>/SearchByCountry/Japan
+        // GET api/Customer/SearchByCountry/Japan
         [HttpGet("SearchByCountry/{country}")]
         public string GetByCountry(string country)
         {
@@ -71,7 +71,35 @@ namespace CustomerApp.Controllers
 
         }
 
-        // GET api/<controller>/5
+        // GET api/Customer/SearchBy/Japan
+        [HttpGet("[action]/{searchBy}/{value}")]
+        public IEnumerable<Customer> GetValueSearch(string searchBy, string value)
+        {
+            List<Customer> resultCustomerSearch = new List<Customer>();
+            if (searchBy == "name")
+            {
+                for (int i = 0; i < customers.Count(); i++)
+                {
+                    if (customers.Any(s => customers[i].name.ToLower().Contains(value.ToLower())))
+                    {
+                        resultCustomerSearch.Add(customers[i]);
+                    }
+                }
+            }
+            if (searchBy == "country")
+            {
+                for (int i = 0; i < customers.Count(); i++)
+                {
+                    if (customers.Any(s => customers[i].country.ToLower().Contains(value.ToLower())))
+                    {
+                        resultCustomerSearch.Add(customers[i]);
+                    }
+                }
+            }
+            return resultCustomerSearch;
+        }
+
+        // GET api/Customer/5
         [HttpGet("{id}")]
         public Customer Get(int id)
         {
@@ -87,7 +115,7 @@ namespace CustomerApp.Controllers
             return cs;
         }
 
-        // POST api/<controller>
+        // POST api/Customer
         [HttpPost]
         public IEnumerable<Customer> Post([FromBody]Customer customer)
         { 
@@ -95,14 +123,24 @@ namespace CustomerApp.Controllers
             return customers;
         }
 
-        // PUT api/<controller>/5
+        // PUT api/Customer/5
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody]Customer customer)
+        public IEnumerable<Customer> Put(int id, [FromBody]Customer customer)
         {
-            
+            for (int i = 0; i < customers.Count(); i++)
+            {
+                if (customers[i].id == id)
+                {
+                    customers[i].id = customer.id;
+                    customers[i].name = customer.name;
+                    customers[i].country = customer.country;
+                    customers[i].phone = customer.phone;
+                }
+            }
+            return customers;
         }
 
-        // DELETE api/<controller>/5
+        // DELETE api/Customer/5
         [HttpDelete("{id}")]
         public IEnumerable<Customer> Delete(int id)
         {
@@ -112,7 +150,6 @@ namespace CustomerApp.Controllers
                 if (customers[i].id == id)
                 {
                     customers.RemoveAt(i);
-                    //customerDeleted = customers[i];
                     break;
                 }
             }
@@ -120,65 +157,48 @@ namespace CustomerApp.Controllers
             return customers;
         }
 
-        [HttpGet("[action]")]
-        public IEnumerable<Customer> getAllCustomer(int id, string name, string country, int phone)
+        //Sort api/Customer/SortCustomer/id/1
+        [HttpGet("[action]/{sortBy}/{sortByValue}")]
+        public IEnumerable<Customer> SortCustomer(string sortBy, int sortByValue)
         {
-            var list = new List<Customer>();
-            var where = new StringBuilder();
-            where.Append("WHERE NAME like '%%'");
-            if (!string.IsNullOrWhiteSpace(name))
+            if (sortBy == "id")
             {
-                where.Append(" AND NAME=@NAME ");
-            }
-            if (!string.IsNullOrWhiteSpace(country))
-            {
-                where.Append(" AND COUNTRY=@COUNTRY ");
-            }
-            var connection = new SqlConnection("Data Source=(local);Initial Catalog=CustomerDB;Integrated Security=True");
-            var command = new SqlCommand()
-            {
-                Connection = connection,
-                CommandText = @"SELECT [ID],[NAME],[COUNTRY],[PHONE] FROM [CustomerDB].[dbo].[customer] ",
-            };
-            if (!string.IsNullOrWhiteSpace(name))
-            {
-                command.Parameters.Add(new SqlParameter("@NAME", SqlDbType.VarChar));
-                command.Parameters["@NAME"].Value = name;
-            }
-            if (!string.IsNullOrWhiteSpace(country))
-            {
-                command.Parameters.Add(new SqlParameter("@COUNTRY", SqlDbType.VarChar));
-                command.Parameters["@COUNTRY"].Value = country;
-            }
-            try
-            {
-                connection.Open();
-                var reader = command.ExecuteReader();
-                while (reader.Read())
+                if (sortByValue == 1)
                 {
-                    var i = new Customer();
-                    i.id = (dynamic)reader["id"];
-                    i.name = reader["name"].ToString();
-                    i.country = reader["country"].ToString();
-                    i.phone = (dynamic)reader["phone"];
-
-                    list.Add(i);
+                    customers = customers.OrderBy(item => item.id).ToList();
                 }
-
-                reader.Close();
-            }
-            catch { throw; }
-            finally
-            {
-                if (connection.State != ConnectionState.Closed)
+                else
                 {
-                    connection.Close();
-                }
+                    customers = customers.OrderByDescending(item => item.id).ToList();
 
-                command.Dispose();
-                connection.Dispose();
+                }
             }
-            return list;
+            if (sortBy == "name")
+            {
+                if (sortByValue == 1)
+                {
+                    customers = customers.OrderBy(item => item.name).ToList();
+                }
+                else
+                {
+                    customers = customers.OrderByDescending(item => item.name).ToList();
+
+                }
+            }
+            if (sortBy == "country")
+            {
+                if (sortByValue == 1)
+                {
+                    customers = customers.OrderBy(item => item.country).ToList();
+                }
+                else
+                {
+                    customers = customers.OrderByDescending(item => item.country).ToList();
+
+                }
+            }
+            return customers;
         }
+
     }
 }

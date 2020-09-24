@@ -16,16 +16,28 @@ export class CustomerService {
     return this.http.get<Customer[]>(this.Api + 'api/Customer/GetCustomer');
   }
 
-  getAll2(): Observable<Customer[]> {
-    return this.http.get<Customer[]>(this.Api + 'api/Customer/getAllCustomer');
+  getCustomerById(id: number): Observable<Customer> {
+    return this.http.get<Customer>(this.Api + 'api/Customer/' + id);
+  }
+
+  updateById(id: number, customer: Customer): Observable<Customer> {
+    return this.http.put<Customer>(this.Api + 'api/Customer/' + id, customer);
   }
 
   addNew(customer: Customer): Observable<Customer> {
     return this.http.post<Customer>(this.Api + 'api/Customer', customer);
   }
 
-  deleteById(id: number): Observable<Customer> {
-    return this.http.delete<Customer>(this.Api + 'api/Customer/${id}');
+  deleteById(id: number): Observable<Customer[]> {
+    return this.http.delete<Customer[]>(this.Api + 'api/Customer/' + id);
+  }
+
+  sortCustomer(sortBy: string, sortByValue: number): Observable<Customer[]> {
+    return this.http.get<Customer[]>(this.Api + 'api/Customer/SortCustomer/' + sortBy + '/' + sortByValue);
+  }
+
+  searchCustomer(searchBy: string, value: string): Observable<Customer[]> {
+    return this.http.get<Customer[]>(this.Api + 'api/Customer/GetValueSearch/' + searchBy + '/' + value);
   }
 
 }
