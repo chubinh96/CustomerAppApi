@@ -39,5 +39,4 @@ export class CustomerService {
   sortCustomer(sortBy: string, sortByValue: number): Observable<Customer[]> {
     return this.http.get<Customer[]>(this.Api + 'api/Customer/SortCustomer/' + sortBy + '/' + sortByValue);
   }
-
 }

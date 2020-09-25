@@ -123,7 +123,6 @@ namespace CustomerApp.Controllers
         [HttpGet("[action]/{sortBy}/{sortByValue}")]
         public IEnumerable<Customer> SortCustomer(string sortBy, int sortByValue)
         {
-
             if (sortBy == "id")
             {
                 if (sortByValue == 1)
@@ -161,7 +160,6 @@ namespace CustomerApp.Controllers
                 }
             }
             return customers;
-
         }
 
     }

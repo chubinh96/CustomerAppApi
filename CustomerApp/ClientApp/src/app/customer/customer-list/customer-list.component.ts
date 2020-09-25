@@ -53,6 +53,7 @@ export class CustomerListComponent implements OnInit {
     }
   }
 
+  //Sort Function
   onSort(sortBy: string) {
     this.sortBy = sortBy;
     if (this.sortBy == 'id') {
