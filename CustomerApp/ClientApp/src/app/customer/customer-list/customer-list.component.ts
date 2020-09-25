@@ -1,7 +1,7 @@
 import { Component, OnInit, Inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { CustomerService } from '../../services/customer.service';
-import { Customer } from '../../model/customer.model';
+import { Customer } from '../../model/customer';
 import { from } from 'rxjs/observable/from'; 
 import { Subscription } from 'rxjs';
 
@@ -14,6 +14,7 @@ export class CustomerListComponent implements OnInit {
   public customers: Customer[];
   public subscription: Subscription;
 
+  //Base Url
   myAppUrl = '';
 
   //Sort Function
@@ -22,8 +23,6 @@ export class CustomerListComponent implements OnInit {
   sortById = 1;
   sortByName = 1;
   sortByCountry = 1;
-
-  //Search Function
 
   constructor(
     private http: HttpClient,
@@ -91,6 +90,7 @@ export class CustomerListComponent implements OnInit {
     }
   }
 
+  //Search Function
   onSearch(option, value) {
     if (value === "") {
       this.subscription = this.customerService.getAll().subscribe(data => {

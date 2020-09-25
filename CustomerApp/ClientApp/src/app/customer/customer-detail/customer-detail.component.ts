@@ -3,7 +3,7 @@ import { Subscription } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { ActivatedRoute, Router } from '@angular/router';
 import { NgForm } from '@angular/forms';
-import { Customer } from '../../model/customer.model';
+import { Customer } from '../../model/customer';
 import { CustomerService } from '../../services/customer.service';
 import { error } from 'util';
 import { from } from 'rxjs/observable/from';
@@ -16,11 +16,11 @@ import { from } from 'rxjs/observable/from';
 export class CustomerDetailComponent implements OnInit {
   public title = '';
   public status: boolean;
-  //currentCustomer: Customer = new Customer();
-  currentCustomer: Customer;
+  currentCustomer: Customer = new Customer();
   subscription: Subscription;
   customerModelId = 0;
 
+  //Base Url
   myAppUrl = '';
 
   constructor(
@@ -43,7 +43,6 @@ export class CustomerDetailComponent implements OnInit {
 
       this.subscription = this.customerService.getCustomerById(this.customerModelId).subscribe(data => {
         this.currentCustomer = data;
-        console.log(this.currentCustomer);
       }, error => console.error(error));
 
       if (this.customerModelId == 0 ) {
@@ -61,7 +60,6 @@ export class CustomerDetailComponent implements OnInit {
     this.subscription = this.customerService.addNew(this.currentCustomer).subscribe(data => {
       console.log(this.currentCustomer);
       console.log(data);
-      //this.routerActive.navigateByUrl('customer');
     }, error => console.error(error));
   }
 
@@ -69,7 +67,6 @@ export class CustomerDetailComponent implements OnInit {
     this.subscription = this.customerService.updateById(this.currentCustomer.id, this.currentCustomer).subscribe(data => {
       console.log(this.currentCustomer);
       console.log(data);
-      //this.routerActive.navigateByUrl('customer');
     }, error => console.error(error));
   }
 

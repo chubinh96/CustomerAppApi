@@ -32,12 +32,12 @@ export class CustomerService {
     return this.http.delete<Customer[]>(this.Api + 'api/Customer/' + id);
   }
 
-  sortCustomer(sortBy: string, sortByValue: number): Observable<Customer[]> {
-    return this.http.get<Customer[]>(this.Api + 'api/Customer/SortCustomer/' + sortBy + '/' + sortByValue);
-  }
-
   searchCustomer(searchBy: string, value: string): Observable<Customer[]> {
     return this.http.get<Customer[]>(this.Api + 'api/Customer/GetValueSearch/' + searchBy + '/' + value);
+  }
+
+  sortCustomer(sortBy: string, sortByValue: number): Observable<Customer[]> {
+    return this.http.get<Customer[]>(this.Api + 'api/Customer/SortCustomer/' + sortBy + '/' + sortByValue);
   }
 
 }

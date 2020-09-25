@@ -33,44 +33,6 @@ namespace CustomerApp.Controllers
             return customers;
         }
 
-        // GET api/Customer/SearchByName/Alex
-        [HttpGet("SearchByName/{name}")]
-        public string GetByName(string name)
-        {
-            List<Customer> customerName = new List<Customer>();
-
-            for (int i = 0; i < customers.Count(); i++)
-            {
-                bool b = customers.Any(s => customers[i].country.Contains(name));
-                if (customers.Any(s => customers[i].name.ToLower().Contains(name.ToLower())))
-                {
-                    customerName.Add(customers[i]);
-                }
-            }
-            string json = JsonConvert.SerializeObject(customerName);
-            return json;
-
-        }
-
-        // GET api/Customer/SearchByCountry/Japan
-        [HttpGet("SearchByCountry/{country}")]
-        public string GetByCountry(string country)
-        {
-            List<Customer> customerCountry = new List<Customer>();
-
-            for (int i = 0; i < customers.Count(); i++)
-            {
-                bool b = customers.Any(s => customers[i].country.Contains(country));
-                if (customers.Any(s => customers[i].country.ToLower().Contains(country.ToLower())))
-                {
-                    customerCountry.Add(customers[i]);
-                }
-            }
-            string json = JsonConvert.SerializeObject(customerCountry);
-            return json;
-
-        }
-
         // GET api/Customer/SearchBy/Japan
         [HttpGet("[action]/{searchBy}/{value}")]
         public IEnumerable<Customer> GetValueSearch(string searchBy, string value)
@@ -161,6 +123,7 @@ namespace CustomerApp.Controllers
         [HttpGet("[action]/{sortBy}/{sortByValue}")]
         public IEnumerable<Customer> SortCustomer(string sortBy, int sortByValue)
         {
+
             if (sortBy == "id")
             {
                 if (sortByValue == 1)
@@ -198,6 +161,7 @@ namespace CustomerApp.Controllers
                 }
             }
             return customers;
+
         }
 
     }

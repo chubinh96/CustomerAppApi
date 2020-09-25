@@ -1,14 +1,21 @@
 <h1>Customer List</h1>
-<form class="form-inline">
-  Search By:
-  <select class="form-control" #optionSearch>
-    <option value="name" selected>Name</option>
-    <option value="country">Country</option>
-  </select>
-  <input class="form-control" type="search" placeholder="Search" aria-label="Search" #textSearch>
-  <button class="btn btn-info" type="submit" (click)="onSearch(optionSearch.value,textSearch.value)">Search
-  </button>
-</form>
+<div>
+  <div>
+    <button class="btn btn-success" [routerLink]="['add']">Add</button>
+  </div>
+  <form class="form-inline">
+    Search By:
+    <select class="form-control" #optionSearch>
+      <option value="name" selected>Name</option>
+      <option value="country">Country</option>
+    </select>
+    <input class="form-control" type="search" placeholder="Search" aria-label="Search" #textSearch>
+    <button class="btn btn-info" type="submit" (click)="onSearch(optionSearch.value,textSearch.value)">
+      Search
+    </button>
+  </form>
+</div>
+
 <table class="table table-bordered table-hover" *ngIf="customers">
   <thead>
     <tr>
@@ -32,7 +39,5 @@
     </tr>
   </tbody>
 </table>
-<div>
-  <button class="btn btn-success" [routerLink]="['add']">Add</button>
-</div>
+
 
